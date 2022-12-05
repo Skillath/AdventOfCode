@@ -4,6 +4,33 @@ namespace AdventOfCode_2022.Days;
 
 public sealed class Day1 : DayBase
 {
+    public Day1(uint day) : base(day)
+    {
+
+    }
+
+    public override Solution Solve()
+    {
+        var input = RawInput
+            .Split(Environment.NewLine + Environment.NewLine)
+            .Select(i => i
+                .Split(Environment.NewLine)
+                .Select(int.Parse)
+                .ToArray())
+            .ToArray();
+
+        var result = input.Max(i => i.Sum());
+
+        var topThree = input
+            .Select(i => i.Sum())
+            .OrderByDescending(i => i)
+            .Take(3)
+            .Sum();
+
+        return new Solution(Day, result.ToString(), topThree.ToString());
+    }
+
+    //INPUT!
     private const string RawInput = @"13399
 13677
 11945
@@ -2257,31 +2284,4 @@ public sealed class Day1 : DayBase
 2533
 5321
 1877";
-
-    public Day1(uint day) : base(day)
-    {
-
-    }
-
-    public override Solution Solve()
-    {
-        var input = RawInput
-            .Split(Environment.NewLine + Environment.NewLine)
-            .Select(i => i
-                .Split(Environment.NewLine)
-                .Select(int.Parse)
-                .ToArray())
-            .ToArray();
-
-        var result = input.Max(i => i.Sum());
-
-        var topThree = input
-            .Select(i => i.Sum())
-            .OrderByDescending(i => i)
-            .Take(3)
-            .Sum();
-
-        return new Solution(Day, result.ToString(), topThree.ToString());
-    }
-
 }

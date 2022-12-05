@@ -6,18 +6,105 @@ public sealed class Day2 : DayBase
 {
     private enum RPS : int
     {
-        Rock = 1, 
-        Paper = 2, 
+        Rock = 1,
+        Paper = 2,
         Scissors = 3,
     }
 
-    private enum Outcome : int
+    private enum Outcome
     {
         Win,
         Draw,
         Lose,
     }
 
+    public Day2(uint day) : base(day)
+    {
+
+    }
+
+    public override Solution Solve()
+    {
+        var rounds = RawInput.Split(Environment.NewLine)
+            .Select(r => r.Split(' '))
+            .ToArray();
+
+        var part1 = rounds
+            .Select(r => (Opponent: GetHand(r[0]), You: GetHand(r[1])))
+            .Sum(r => GetPoints(r.Opponent, r.You));
+
+        var part2 = rounds
+            .Select(r => (Opponent: GetHand(r[0]), Outcome: GetOutcome(r[1])))
+            .Select(r => (r.Opponent, You: GetHandFromOpponentsHand(r.Opponent, r.Outcome)))
+            .Sum(r => GetPoints(r.Opponent, r.You));
+
+        return new Solution(Day, part1.ToString(), part2.ToString());
+    }
+
+    private static RPS GetHand(string hand)
+    {
+        return hand switch
+        {
+            "A" or "X" => RPS.Rock,
+            "B" or "Y" => RPS.Paper,
+            "C" or "Z" => RPS.Scissors,
+            _ => throw new Exception("Wrong input?")
+        };
+    }
+
+    private static Outcome GetOutcome(string input)
+    {
+        return input switch
+        {
+            "X" => Outcome.Lose,
+            "Y" => Outcome.Draw,
+            "Z" => Outcome.Win,
+            _ => throw new Exception("Wrong input?")
+        };
+    }
+
+    private static int GetPoints(RPS left, RPS right)
+    {
+        var outcome = (int)right;
+
+        if (left == right)
+            return outcome + 3;
+
+        switch (right)
+        {
+            case RPS.Paper when left is RPS.Scissors:
+            case RPS.Rock when left is RPS.Paper:
+            case RPS.Scissors when left is RPS.Rock:
+                return outcome;
+            case RPS.Paper when left is RPS.Rock:
+            case RPS.Rock when left is RPS.Scissors:
+            case RPS.Scissors when left is RPS.Paper:
+                return outcome + 6;
+            default:
+                return outcome + 3;
+        }
+    }
+
+    private static RPS GetHandFromOpponentsHand(RPS opponent, Outcome outcome)
+    {
+        switch (opponent)
+        {
+            case RPS.Paper when outcome is Outcome.Win:
+            case RPS.Rock when outcome is Outcome.Lose:
+                return RPS.Scissors;
+            case RPS.Paper when outcome is Outcome.Lose:
+            case RPS.Scissors when outcome is Outcome.Win:
+                return RPS.Rock;
+            case RPS.Rock when outcome is Outcome.Win:
+            case RPS.Scissors when outcome is Outcome.Lose:
+                return RPS.Paper;
+
+            default:
+                return opponent;
+        }
+    }
+
+    //INPUT!
     private const string RawInput = @"B X
 C Y
 A X
@@ -2518,91 +2605,4 @@ A Y
 A Z
 C Z
 A Z";
-
-    public Day2(uint day) : base(day)
-    {
-
-    }
-
-    public override Solution Solve()
-    {
-        var rounds = RawInput.Split(Environment.NewLine)
-            .Select(r => r.Split(' '))
-            .ToArray();
-
-        var part1 = rounds
-            .Select(r => (Opponent: GetHand(r[0]), You: GetHand(r[1])))
-            .Sum(r => GetPoints(r.Opponent, r.You));
-
-        var part2 = rounds
-            .Select(r => (Opponent: GetHand(r[0]), Outcome: GetOutcome(r[1])))
-            .Select(r => (r.Opponent, You: GetHandFromOpponentsHand(r.Opponent, r.Outcome)))
-            .Sum(r => GetPoints(r.Opponent, r.You));
-
-        return new Solution(Day, part1.ToString(), part2.ToString());
-    }
-
-    private static RPS GetHand(string hand)
-    {
-        return hand switch
-        {
-            "A" or "X" => RPS.Rock,
-            "B" or "Y" => RPS.Paper,
-            "C" or "Z" => RPS.Scissors,
-            _ => throw new Exception("Wrong input?")
-        };
-    }
-
-    private static Outcome GetOutcome(string input)
-    {
-        return input switch
-        {
-            "X" => Outcome.Lose,
-            "Y" => Outcome.Draw,
-            "Z" => Outcome.Win,
-            _ => throw new Exception("Wrong input?")
-        };
-    }
-
-    private static int GetPoints(RPS left, RPS right)
-    {
-        var outcome = (int)right;
-
-        if (left == right)
-            return outcome + 3;
-
-        switch (right)
-        {
-            case RPS.Paper when left is RPS.Scissors:
-            case RPS.Rock when left is RPS.Paper:
-            case RPS.Scissors when left is RPS.Rock:
-                return outcome;
-            case RPS.Paper when left is RPS.Rock:
-            case RPS.Rock when left is RPS.Scissors:
-            case RPS.Scissors when left is RPS.Paper:
-                return outcome + 6;
-            default:
-                return outcome + 3;
-        }
-    }
-
-    private static RPS GetHandFromOpponentsHand(RPS opponent, Outcome outcome)
-    {
-        switch (opponent)
-        {
-            case RPS.Paper when outcome is Outcome.Win:
-            case RPS.Rock when outcome is Outcome.Lose:
-                return RPS.Scissors;
-            case RPS.Paper when outcome is Outcome.Lose:
-            case RPS.Scissors when outcome is Outcome.Win:
-                return RPS.Rock;
-            case RPS.Rock when outcome is Outcome.Win:
-            case RPS.Scissors when outcome is Outcome.Lose:
-                return RPS.Paper;
-
-            default:
-                return opponent;
-        }
-    }
-
 }

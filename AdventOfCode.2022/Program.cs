@@ -11,6 +11,16 @@ var results = await Task.Run(() =>
         .OrderBy(d => d.Day)
         .ToArray());
 
+Console.WriteLine();
+Console.Write(@" / \---------------------------, 
+ \_,|                          | 
+    |    Advent of Code 2022   | 
+    |  ,-------------------------
+    \_/________________________/ ");
+
+Console.WriteLine();
+Console.WriteLine();
+
 foreach (var result in results)
 {
     Console.WriteLine(result.ToString());
