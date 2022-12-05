@@ -2,14 +2,11 @@
 
 namespace AdventOfCode_2022.Days;
 
-public sealed class Day1 : DayBase
+public sealed class Day1 : IPuzzle
 {
-    public Day1(uint day) : base(day)
-    {
+    public uint Day => 1;
 
-    }
-
-    public override Solution Solve()
+    public Solution Solve()
     {
         var input = RawInput
             .Split(Environment.NewLine + Environment.NewLine)

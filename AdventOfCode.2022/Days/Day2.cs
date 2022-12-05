@@ -2,7 +2,7 @@
 
 namespace AdventOfCode_2022.Days;
 
-public sealed class Day2 : DayBase
+public sealed class Day2 : IPuzzle
 {
     private enum RPS : int
     {
@@ -18,14 +18,11 @@ public sealed class Day2 : DayBase
         Lose,
     }
 
-    public Day2(uint day) : base(day)
-    {
+    public uint Day => 2;
 
-    }
-
-    public override Solution Solve()
+    public Solution Solve()
     {
-        var rounds = RawInput.Split(Environment.NewLine)
+        var rounds = RawInput.SplitInput()
             .Select(r => r.Split(' '))
             .ToArray();
 
