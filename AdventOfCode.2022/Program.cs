@@ -3,7 +3,7 @@ using AdventOfCode_2022.Days;
 
 var days = new IPuzzle[]
 {
-    new Day1(), new Day2(), new Day3(),
+    new Day1(), new Day2(), new Day3(), new Day4(),
 };
 
 var results = await Task.Run(() =>
