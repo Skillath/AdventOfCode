@@ -15,7 +15,7 @@ public sealed partial class Day01 : DayBase
             var firstIntAsString = input.FirstOrDefault(char.IsNumber);
             var lastIntAsString = input.LastOrDefault(char.IsNumber);
             
-            var numberAsString = new string(firstIntAsString, lastIntAsString);
+            var numberAsString = string.Concat(firstIntAsString, lastIntAsString);
             if (!int.TryParse(numberAsString, out var number))
                 continue;
 
