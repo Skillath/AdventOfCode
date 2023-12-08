@@ -9,6 +9,7 @@
 
     <ItemGroup>
       <PackageReference Include="AoCHelper" Version="3.1.0" />
+      <PackageReference Include="JetBrains.Annotations" Version="2023.3.0" />
     </ItemGroup>
 
     <ItemGroup>

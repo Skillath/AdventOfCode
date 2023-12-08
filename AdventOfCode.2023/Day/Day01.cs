@@ -1,22 +1,18 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Runtime.InteropServices.JavaScript;
+using System.Text.RegularExpressions;
+using JetBrains.Annotations;
 
 namespace AdventOfCode2023.Day;
 
-public sealed partial class Day01 : DayBase
+[UsedImplicitly]
+public sealed class Day01 : DayBase
 {
-    [GeneratedRegex(@"(?:one|two|three|four|five|six|seven|eight|nine|\d)")]
-    private static partial Regex MyRegex();
-
     public override ValueTask<string> Solve_1()
     {
         var result = 0;
         foreach (var input in Inputs)
         {
-            var firstIntAsString = input.FirstOrDefault(char.IsNumber);
-            var lastIntAsString = input.LastOrDefault(char.IsNumber);
-            
-            var numberAsString = string.Concat(firstIntAsString, lastIntAsString);
-            if (!int.TryParse(numberAsString, out var number))
+            if (!GetValueFromInputLine(input, out var number))
                 continue;
 
             result += number;
@@ -29,54 +25,47 @@ public sealed partial class Day01 : DayBase
     {
         var numbersSpelledOut = new Dictionary<string, string>
         {
-            { "one", "1" }, 
-            { "two", "2" }, 
-            { "three", "3" }, 
-            { "four", "4" }, 
-            { "five", "5" }, 
-            { "six", "6" }, 
-            { "seven", "7" }, 
-            { "eight", "8" }, 
-            { "nine", "9" },
+            { "one", "o1e" }, 
+            { "two", "t2o" }, 
+            { "three", "th3ee" }, 
+            { "four", "fo4ur" }, 
+            { "five", "fi5ve" }, 
+            { "six", "s6x" }, 
+            { "seven", "se7en" }, 
+            { "eight", "ei8ht" }, 
+            { "nine", "ni9ne" },
         };
-
+        
         var result = 0;
-        foreach (var input in Inputs)
+        foreach (var i in Inputs)
         {
-            var matches = MyRegex()
-                .Matches(input);
-
-            var numbers = new List<string>();
-            foreach (Match match in matches)
+            var input = i;
+            foreach (var (key, value) in numbersSpelledOut)
             {
-                var value = match.Value;
-                if (int.TryParse(match.Value, out _))
-                {
-                    numbers.Add(value);
-                    continue;
-                }
-
-                if (numbersSpelledOut.TryGetValue(value, out var num))
-                {
-                    numbers.Add(num);
-                    continue;
-                }
+                input = input.Replace(key, value);
             }
-
-            if(!numbers.Any())
-                continue;
             
-            var firstIntAsString = numbers.First();
-            var lastIntAsString = numbers.Last();
-
-
-            var numberAsString = string.Concat(firstIntAsString, lastIntAsString);
-            if (!int.TryParse(numberAsString, out var number))
+            if (!GetValueFromInputLine(input, out var number)) 
                 continue;
 
             result += number;
         }
 
         return new(result.ToString());
+    }
+
+    private static bool GetValueFromInputLine(string input, out int number)
+    {
+        number = 0;
+        input = new string(input.Where(char.IsNumber).ToArray());
+        if (string.IsNullOrEmpty(input))
+            return false;
+        
+        var firstIntAsString = input[0];
+        var lastIntAsString = input[^1];
+
+        var numberAsString = string.Concat(firstIntAsString, lastIntAsString);
+
+        return int.TryParse(numberAsString, out number);
     }
 }
