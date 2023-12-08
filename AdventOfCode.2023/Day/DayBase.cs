@@ -9,5 +9,11 @@ public abstract class DayBase : BaseDay
     protected DayBase() : base()
     {
         Inputs = File.ReadAllLines(InputFilePath);
+        AfterConstruct();
+    }
+
+    protected virtual void AfterConstruct()
+    {
+        
     }
 }

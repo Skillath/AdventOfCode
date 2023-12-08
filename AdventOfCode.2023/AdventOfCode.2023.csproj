@@ -17,8 +17,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove="Inputs\01.txt" />
-      <AdditionalFiles Include="Inputs\01.txt">
+      <None Remove="Inputs\*.txt" />
+      <AdditionalFiles Include="Inputs\*.txt">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </AdditionalFiles>
     </ItemGroup>
