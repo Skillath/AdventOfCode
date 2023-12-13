@@ -13,10 +13,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Inputs\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <None Remove="Inputs\*.txt" />
       <AdditionalFiles Include="Inputs\*.txt">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
