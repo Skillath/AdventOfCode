@@ -6,13 +6,15 @@ namespace AdventOfCode2023.Day;
 [UsedImplicitly]
 public sealed class Day03 : DayBase
 {
+    private const string Symbols = "$&+*";
+    
     private readonly record struct Point(int X, int Y);
     
-    private static IReadOnlyDictionary<Point, string> MapInput(string[] inputs)
+    private static Dictionary<Point, string> MapInput(IReadOnlyList<string> inputs)
     {
         var map = new Dictionary<Point, string>();
         
-        for (var i = 0; i < inputs.Length; i++)
+        for (var i = 0; i < inputs.Count; i++)
         {
             var input = inputs[i];
             var numberBuilder = new StringBuilder();
@@ -35,7 +37,7 @@ public sealed class Day03 : DayBase
                 if(character is '.')
                     continue;
 
-                if (character is not ('#' or '$' or '*' or '+')) 
+                if(!Symbols.Contains(character)) 
                     continue;
                 
                 map.Add(new Point(j, i), character.ToString());
@@ -44,13 +46,19 @@ public sealed class Day03 : DayBase
 
         return map;
     }
-
     
     public override ValueTask<string> Solve_1()
     {
         var map = MapInput(Inputs.ToArray());
 
-        
+        var symbolPositions = map
+            .Where(item => Symbols.Contains(item.Value))
+            .Select(item => item.Key);
+
+        foreach (var symbolPosition in symbolPositions)
+        {
+            
+        }
         
         return new("");
     }
