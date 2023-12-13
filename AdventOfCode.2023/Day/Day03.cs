@@ -8,11 +8,10 @@ public sealed class Day03 : DayBase
 {
     private readonly record struct Point(int X, int Y);
     
-    public override ValueTask<string> Solve_1()
+    private static IReadOnlyDictionary<Point, string> MapInput(string[] inputs)
     {
         var map = new Dictionary<Point, string>();
         
-        var inputs = Inputs.ToArray();
         for (var i = 0; i < inputs.Length; i++)
         {
             var input = inputs[i];
@@ -43,11 +42,19 @@ public sealed class Day03 : DayBase
             }
         }
 
+        return map;
+    }
+
+    
+    public override ValueTask<string> Solve_1()
+    {
+        var map = MapInput(Inputs.ToArray());
+
         
         
         return new("");
     }
-
+    
     public override ValueTask<string> Solve_2()
     {
         return new("");
